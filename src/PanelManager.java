@@ -1,14 +1,12 @@
- import javax.swing.*;
+import javax.swing.*;
 import java.awt.*;
 
 public class PanelManager extends JPanel {
-
     private CardLayout cardLayout;
 
     public PanelManager() {
         cardLayout = new CardLayout();
         setLayout(cardLayout);
-
 
         JPanel homePanel = new JPanel();
         homePanel.setBackground(Color.CYAN);
@@ -18,10 +16,8 @@ public class PanelManager extends JPanel {
         aboutPanel.setBackground(Color.LIGHT_GRAY);
         aboutPanel.add(new JLabel("About This Application"));
 
-
         add(homePanel, "HOME");
         add(aboutPanel, "ABOUT");
-
 
         cardLayout.show(this, "HOME");
     }
@@ -30,4 +26,3 @@ public class PanelManager extends JPanel {
         cardLayout.show(this, name);
     }
 }
-
