@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/GROUPP-18/task4.git'
+                git branch: 'main', url: 'https://github.com/GROUPP-18/task4.git'
             }
         }
 
