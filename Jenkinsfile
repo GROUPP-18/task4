@@ -30,7 +30,7 @@ pipeline {
             }
         }
 
-        stage('Code Quality (SonarQube)') {
+        stage('Code Quality') {
             steps {
                 echo 'Simulating SonarQube Analysis...'
             }
@@ -44,28 +44,23 @@ pipeline {
                 echo "Deploying to ${env.DEPLOY_TARGET}..."
             }
         }
-    }
+    } // <--- End of stages
 
-    // THIS IS THE UPDATED NOTIFICATION BLOCK FOR TASK 7
-    post {
+    post { // <--- This must start right after stages ends
         always {
-            // This uses 'curl' which is built into Windows 11 to send the message
+            // This 'bat' command uses Windows 'curl' to send your Slack message
+            // BE CAREFUL: Replace the URL below with your actual Slack Webhook URL
             bat """
-            curl -X POST -H "Content-type: application/json" --data "{\\"text\\":\\"Build #${env.BUILD_NUMBER} finished for ${env.JOB_NAME}. Status: ${currentBuild.currentResult}\\"}" PASTE_YOUR_FULL_WEBHOOK_URL_HERE
+            curl -X POST -H "Content-type: application/json" --data "{\\"text\\":\\"Build #${env.BUILD_NUMBER} for ${env.JOB_NAME} is ${currentBuild.currentResult}\\"}" https://hooks.slack.com/services/YOUR/REAL/WEBHOOK/HERE
             """
         }
-    }
         
         failure {
-            // This part runs ONLY if the build fails
-            echo 'Build Failed! Notifying the team via Email and Teams...'
-            
-            // We will add the specific 'emailext' and 'office365' code here 
-            // once you have the plugins for those configured.
+            echo 'Build Failed! You can add your Teams/Email code here next.'
         }
         
         success {
             echo 'Build Succeeded!'
         }
-    }
-
+    } // <--- End of post
+} // <--- End of pipeline
