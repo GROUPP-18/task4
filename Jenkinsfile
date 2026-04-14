@@ -47,15 +47,14 @@ pipeline {
     }
 
     // THIS IS THE UPDATED NOTIFICATION BLOCK FOR TASK 7
-    post {
-        always {
+    always {
             slackSend(
                 channel: '#jenkins-build', 
-                token: 'PASTE_THE_ACTUAL_WEBHOOK_URL_HERE', // Put the URL directly here
-                message: "Test Build"
+                color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
+                tokenCredentialId: 'slack-secret', // Use the new ID here
+                message: "Build: ${env.JOB_NAME} - #${env.BUILD_NUMBER} Status: ${currentBuild.currentResult}"
             )
         }
-    }
         
         failure {
             // This part runs ONLY if the build fails
