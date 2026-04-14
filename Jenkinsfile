@@ -49,12 +49,11 @@ pipeline {
     // THIS IS THE UPDATED NOTIFICATION BLOCK FOR TASK 7
     post {
         always {
-            // This sends a message to your '#jenkins-build' channel every time
             slackSend(
                 channel: '#jenkins-build', 
                 color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
-                tokenCredentialId: 'slack-webhook-url', 
-                message: "Build: ${env.JOB_NAME} - #${env.BUILD_NUMBER}\nStatus: ${currentBuild.currentResult}\nLink: ${env.BUILD_URL}"
+                tokenCredentialId: 'slack-secret', // Use the new ID here
+                message: "Build: ${env.JOB_NAME} - #${env.BUILD_NUMBER} Status: ${currentBuild.currentResult}"
             )
         }
         
