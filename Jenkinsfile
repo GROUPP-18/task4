@@ -53,7 +53,7 @@ pipeline {
             slackSend(
                 channel: '#jenkins-build', 
                 color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
-                tokenCredentialId: 'slack-webhook', 
+                tokenCredentialId: 'slack-webhook-url', 
                 message: "Build: ${env.JOB_NAME} - #${env.BUILD_NUMBER}\nStatus: ${currentBuild.currentResult}\nLink: ${env.BUILD_URL}"
             )
         }
