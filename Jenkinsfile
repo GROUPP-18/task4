@@ -48,14 +48,19 @@ pipeline {
 
     post {
         always {
-            // This sends a notification to Slack every time the build runs
-            bat """
-            curl -X POST -H "Content-type: application/json" --data "{\\"text\\":\\"Build #${env.BUILD_NUMBER} for ${env.JOB_NAME} is ${currentBuild.currentResult}\\nLink: ${env.BUILD_URL}\\"}" https://hooks.slack.com/services/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
-            """
+            // Task 7.1: Professional Slack Notification
+            // Ensure you have a 'Secret Text' credential in Jenkins with ID 'slack-secret'
+            slackSend(
+                channel: '#jenkins-build', 
+                color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
+                tokenCredentialId: 'slack-secret', 
+                message: "Build: ${env.JOB_NAME} - #${env.BUILD_NUMBER}\nStatus: ${currentBuild.currentResult}\nLink: ${env.BUILD_URL}"
+            )
         }
         
         failure {
-            echo 'Build Failed! Follow the same steps to add your Teams webhook here next.'
+            // Placeholder for Teams and Email (Task 7.2 & 7.3)
+            echo 'Build Failed! Follow the same logic for Teams and Email next.'
         }
     }
 }
