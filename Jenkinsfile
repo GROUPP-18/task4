@@ -47,14 +47,14 @@ pipeline {
     }
 
     // THIS IS THE UPDATED NOTIFICATION BLOCK FOR TASK 7
-    always {
-            slackSend(
-                channel: '#jenkins-build', 
-                color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
-                tokenCredentialId: 'slack-secret', // Use the new ID here
-                message: "Build: ${env.JOB_NAME} - #${env.BUILD_NUMBER} Status: ${currentBuild.currentResult}"
-            )
+    post {
+        always {
+            // This uses 'curl' which is built into Windows 11 to send the message
+            bat """
+            curl -X POST -H "Content-type: application/json" --data "{\\"text\\":\\"Build #${env.BUILD_NUMBER} finished for ${env.JOB_NAME}. Status: ${currentBuild.currentResult}\\"}" PASTE_YOUR_FULL_WEBHOOK_URL_HERE
+            """
         }
+    }
         
         failure {
             // This part runs ONLY if the build fails
