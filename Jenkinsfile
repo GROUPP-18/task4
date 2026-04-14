@@ -44,23 +44,18 @@ pipeline {
                 echo "Deploying to ${env.DEPLOY_TARGET}..."
             }
         }
-    } // <--- End of stages
+    }
 
-    post { // <--- This must start right after stages ends
+    post {
         always {
-            // This 'bat' command uses Windows 'curl' to send your Slack message
-            // BE CAREFUL: Replace the URL below with your actual Slack Webhook URL
+            // This sends a notification to Slack every time the build runs
             bat """
-            curl -X POST -H "Content-type: application/json" --data "{\\"text\\":\\"Build #${env.BUILD_NUMBER} for ${env.JOB_NAME} is ${currentBuild.currentResult}\\"}" https://hooks.slack.com/services/YOUR/REAL/WEBHOOK/HERE
+            curl -X POST -H "Content-type: application/json" --data "{\\"text\\":\\"Build #${env.BUILD_NUMBER} for ${env.JOB_NAME} is ${currentBuild.currentResult}\\nLink: ${env.BUILD_URL}\\"}" https://hooks.slack.com/services/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
             """
         }
         
         failure {
-            echo 'Build Failed! You can add your Teams/Email code here next.'
+            echo 'Build Failed! Follow the same steps to add your Teams webhook here next.'
         }
-        
-        success {
-            echo 'Build Succeeded!'
-        }
-    } // <--- End of post
-} // <--- End of pipeline
+    }
+}
