@@ -51,11 +51,11 @@ pipeline {
         always {
             slackSend(
                 channel: '#jenkins-build', 
-                color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
-                tokenCredentialId: 'slack-secret', // Use the new ID here
-                message: "Build: ${env.JOB_NAME} - #${env.BUILD_NUMBER} Status: ${currentBuild.currentResult}"
+                token: 'PASTE_THE_ACTUAL_WEBHOOK_URL_HERE', // Put the URL directly here
+                message: "Test Build"
             )
         }
+    }
         
         failure {
             // This part runs ONLY if the build fails
